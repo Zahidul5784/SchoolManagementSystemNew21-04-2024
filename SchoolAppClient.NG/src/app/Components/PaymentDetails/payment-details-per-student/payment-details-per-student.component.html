@@ -1,0 +1,105 @@
+<div class="container">
+  <form (ngSubmit)="onSubmit()">
+    <!-- Standard Selection -->
+    <div class="form-group row">
+      <label for="standardFilter" class="col-md-4 col-form-label">Filter by Standard:</label>
+      <div class="col-md-8">
+        <select id="standardFilter" name="standardFilter" class="form-control" [(ngModel)]="selectedStandardId" (ngModelChange)="onStandardChange()">
+          <option value="">All</option> <!-- Option to show all students -->
+          <option *ngFor="let standard of standards" [value]="standard.standardId">{{ standard.standardName }}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Student Selection -->
+    <div class="form-group row">
+      <label for="studentId" class="col-md-4 col-form-label">Student Name:</label>
+      <div class="col-md-8">
+        <select id="studentId"
+                name="studentId"
+                class="form-control"
+                required
+                [(ngModel)]="studentId"
+                #patID="ngModel">
+          <option *ngFor="let student of filteredStudents" [value]="student.studentId">
+            {{ student.enrollmentNo }} - {{ student.studentName }}
+          </option>
+        </select>
+        <div *ngIf="patID.invalid && (patID.dirty || patID.touched)" class="invalid-feedback">
+          Select a student name.
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+  <table class="payment-table">
+    <thead>
+      <tr>
+        <th>Payment Date</th>
+        <th>Monthly Payment ID</th>
+        <th>Student ID</th>
+        <th>Total Fee Amount</th>
+        <th>Waver</th>
+        <th>Previous Due</th>
+        <th>Total Amount</th>
+        <th>Amount Paid</th>
+        <th>Amount Remaining</th>
+
+        <!-- <th>Payment Months</th>
+        <th>Payment Details</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let payment of payments">
+        <td>{{ payment.paymentDate }}</td>
+        <td>{{ payment.monthlyPaymentId }}</td>
+        <td>{{ payment.studentId }}</td>
+        <td>{{ payment.totalFeeAmount }}</td>
+        <td>{{ payment.waver }}</td>
+        <td>{{ payment.previousDue }}</td>
+        <td>{{ payment.totalAmount }}</td>
+        <td>{{ payment.amountPaid }}</td>
+        <td>{{ payment.amountRemaining }}</td>
+
+        <td><a class="btn btn-info" [routerLink]="['/monthlypayment', payment.monthlyPaymentId, 'details']">Details</a></td>
+        <!-- <td>
+          <ul>
+            <li *ngFor="let paymentMonth of payment.paymentMonths">
+              {{ paymentMonth.monthName }}
+            </li>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <li *ngFor="let paymentDetail of payment.paymentDetails">
+              {{ paymentDetail.feeName }} - {{ paymentDetail.feeAmount }}
+            </li>
+          </ul>
+        </td> -->
+      </tr>
+    </tbody>
+  </table>
+  <!-- Table for Payment Details -->
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>Fee Name</th>
+        <th>Payment Months</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let payment of payments">
+        <tr *ngFor="let paymentDetail of payment.paymentDetails">
+          <td>{{ paymentDetail.feeName }}</td>
+          <td>
+            <ul>
+              <li *ngFor="let paymentMonth of payment.paymentMonths">{{ paymentMonth.monthName }}</li>
+            </ul>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

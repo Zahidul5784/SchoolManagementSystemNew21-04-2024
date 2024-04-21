@@ -1,0 +1,41 @@
+<div class="container">
+    <h2>Other Payments</h2>
+    <a class="btn btn-success" routerLink="/otherpayment/create">
+        Create new payment
+    </a>
+    <div class="form-group">
+        <input type="text" class="form-control short-input" placeholder="Search by Student Name" [(ngModel)]="searchName">
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th> Payment ID</th>
+                    <th>Student Name</th>
+                    <th>Enrollment No</th>
+                    <th>Total Amount</th>
+                    <th>Amount Paid</th>
+                    <th>Amount Remaining</th>
+                    <th>Payment Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let otherPayment of filteredPayments">
+                    <td>{{ otherPayment.othersPaymentId }}</td>
+                    <td>{{ otherPayment.student.studentName }}</td>
+                    <td>{{ otherPayment.student.enrollmentNo }}</td>
+                    <td>{{ otherPayment.totalAmount }}</td>
+                    <td>{{ otherPayment.amountPaid }}</td>
+                    <td>{{ otherPayment.amountRemaining }}</td>
+                    <td>{{ otherPayment.paymentDate | date }}</td>
+                    <td>
+                        <a class="btn btn-info" [routerLink]="['/otherpayment', otherPayment.othersPaymentId,'details']">Details</a>
+                        <a class="btn btn-primary" [routerLink]="['/otherpayment',otherPayment.othersPaymentId, 'edit']">Edit</a>
+                        <button class="btn btn-danger" (click)="deleteOtherPayment(otherPayment.othersPaymentId)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
